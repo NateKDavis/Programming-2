@@ -11,21 +11,20 @@ namespace Davis__Nathan___Histogram
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to the Speech Histogram!");
-            int input = Program.ReadInteger("year", 10, 200);
 
             Console.ReadKey();
         }
 
-        public static int ReadInteger(string prompt, int min, int max)
+        #region ReadInteger Method
+        static int ReadInteger(string prompt, int min, int max)
         {
-            // Initalizing vaiables. valid to continue while loop. userInput to store what is entered for returning. 
             bool valid = false;
             int userInput = 0;
 
             // while loop to continue asking the user for a valid input
             while(valid == false)
             {
-                Console.Write($"Please enter a number between {min} and {max} for {prompt}: ");
+                Console.Write($"Please enter a value for {prompt} that is between {min} and {max}: ");
 
                 // if to check if input is a number
                 if( int.TryParse(Console.ReadLine(), out userInput) )
@@ -50,10 +49,38 @@ namespace Davis__Nathan___Histogram
                     Console.Clear();
                     Console.WriteLine("Input was not a number!");
                 }
-
             }
 
             return userInput;
         }
+        #endregion
+
+        #region ReadString Method
+        static void ReadString(string prompt, ref string value)
+        {
+            bool valid = false;
+
+            // loops until user input is valid
+            while(valid == false)
+            {
+                Console.Write($"Please enter a {prompt}: ");
+                string userInput = Console.ReadLine();
+
+                // checks is user input is empty or only whitespace
+                if (!string.IsNullOrWhiteSpace(userInput))
+                {
+                    value = userInput;
+                    break;
+                }
+
+                // error message for user
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine($"Input was not valid! Please enter a {prompt}!");
+                }
+            }
+        }
+        #endregion
     }
 }
