@@ -10,8 +10,10 @@ namespace Davis__Nathan___Histogram
     {
         static void Main(string[] args)
         {
+            int temp = 0;
+            string[] colors = new string[] { "test", "pizza", "Ice Cream" };
             Console.WriteLine("Welcome to the Speech Histogram!");
-
+            ReadChoice("Favorite color?", colors[], temp);
             Console.ReadKey();
         }
 
@@ -82,5 +84,15 @@ namespace Davis__Nathan___Histogram
             }
         }
         #endregion
+
+        static void ReadChoice(string prompt, string[] options, out int selection)
+        {
+            foreach (string item in options)
+            {
+                Console.WriteLine(item);
+            }
+
+            ReadChoice($"Please input a number between 0 and {options.Length} to select: ", options, out selection);
+        }
     }
 }
