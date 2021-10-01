@@ -22,19 +22,33 @@ namespace Davis__Nathan___Histogram
                 "Exit"
             };
 
-            List<string> wordList = GetSpeech().Split(' ', ',', '.', '!').ToList();
+            char[] delimeters = new char[]
+            {
+                ',',
+                '.',
+                '!',
+                ':',
+                ';',
+                ' ',
+                '\n',
+                '\t',
+                '\r'
+            };
+
+            List<string> wordList = GetSpeech().Split(delimeters, StringSplitOptions.RemoveEmptyEntries).ToList();
             Dictionary<string, int> wordCount = new Dictionary<string, int>();
 
             foreach (string word in wordList)
             {
-                if (!wordCount.ContainsKey(word))
+
+                if (!wordCount.ContainsKey(word.ToLower()) || !wordCount.ContainsKey(word))
                 {
                     wordCount.Add(word, 1);
                 }
 
-                else if (wordCount.ContainsKey(word))
+                else
                 {
-                    wordCount;
+                    wordCount[word] = wordCount[word.ToLower()]++;
                 }
             }
 
@@ -47,9 +61,12 @@ namespace Davis__Nathan___Histogram
                 switch (userInput)
                 {
                     case 1:
-                        Console.WriteLine("\n\t\tNot Implemented! Returning you to Menu...");
-                        System.Threading.Thread.Sleep(4000);
-                        Console.Clear();
+                        foreach(KeyValuePair<string, int> word in wordCount)
+                        {
+                            Console.WriteLine(word);
+                        }
+
+                        Console.ReadKey();
                         break;
 
                     case 2:
