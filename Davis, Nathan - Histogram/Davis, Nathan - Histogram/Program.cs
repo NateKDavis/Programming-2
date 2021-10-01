@@ -10,10 +10,65 @@ namespace Davis__Nathan___Histogram
     {
         static void Main(string[] args)
         {
-            int temp = 0;
-            string[] colors = new string[] { "test", "pizza", "Ice Cream" };
-            Console.WriteLine("Welcome to the Speech Histogram!");
-            ReadChoice("Favorite color?", colors[], temp);
+            int userInput = 0;
+
+            string[] menuOptions = new string[] {
+                "Show Histogram",
+                "Search for Word",
+                "Save Histogram",
+                "Load Histogram",
+                "Remove Word",
+                "Exit"
+            };
+
+            Console.WriteLine("Welcome to Lab 1: Histogram!");
+
+            while(userInput != 6)
+            {
+                ReadChoice("Option", menuOptions, out userInput);
+
+                switch (userInput)
+                {
+                    case 1:
+                        Console.WriteLine("\n\t\tNot Implemented!");
+                        System.Threading.Thread.Sleep(4000);
+                        Console.Clear();
+                        break;
+
+                    case 2:
+                        Console.WriteLine("\n\t\tNot Implemented!");
+                        System.Threading.Thread.Sleep(4000);
+                        Console.Clear();
+                        break;
+
+                    case 3:
+                        Console.WriteLine("\n\t\tNot Implemented!");
+                        System.Threading.Thread.Sleep(4000);
+                        Console.Clear();
+                        break;
+
+                    case 4:
+                        Console.WriteLine("\n\t\tNot Implemented!");
+                        System.Threading.Thread.Sleep(4000);
+                        Console.Clear();
+                        break;
+
+                    case 5:
+                        Console.WriteLine("\n\t\tNot Implemented!");
+                        System.Threading.Thread.Sleep(4000);
+                        Console.Clear();
+                        break;
+
+                    case 6:
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid selection!");
+                        break;
+                }
+            }
+
+            Console.Write("\nPress any key to exit.");
             Console.ReadKey();
         }
 
@@ -21,18 +76,18 @@ namespace Davis__Nathan___Histogram
         static int ReadInteger(string prompt, int min, int max)
         {
             bool valid = false;
-            int userInput = 0;
+            int readIntInput = 0;
 
             // while loop to continue asking the user for a valid input
             while(valid == false)
             {
-                Console.Write($"Please enter a value for {prompt} that is between {min} and {max}: ");
+                Console.Write($"Please enter a value for a {prompt} that is between {min} and {max}: ");
 
                 // if to check if input is a number
-                if( int.TryParse(Console.ReadLine(), out userInput) )
+                if( int.TryParse(Console.ReadLine(), out readIntInput) )
                 {
                     // if to check if number is with in min and max
-                    if(userInput >= min && userInput <= max)
+                    if(readIntInput >= min && readIntInput <= max)
                     {
                         break;
                     }
@@ -53,7 +108,7 @@ namespace Davis__Nathan___Histogram
                 }
             }
 
-            return userInput;
+            return readIntInput;
         }
         #endregion
 
@@ -66,12 +121,12 @@ namespace Davis__Nathan___Histogram
             while(valid == false)
             {
                 Console.Write($"Please enter a {prompt}: ");
-                string userInput = Console.ReadLine();
+                string readStringInput = Console.ReadLine();
 
                 // checks is user input is empty or only whitespace
-                if (!string.IsNullOrWhiteSpace(userInput))
+                if (!string.IsNullOrWhiteSpace(readStringInput))
                 {
-                    value = userInput;
+                    value = readStringInput;
                     break;
                 }
 
@@ -85,14 +140,22 @@ namespace Davis__Nathan___Histogram
         }
         #endregion
 
+        #region ReadChoice Method
         static void ReadChoice(string prompt, string[] options, out int selection)
         {
+            int idx = 1;
+
+            Console.WriteLine();
+
             foreach (string item in options)
             {
-                Console.WriteLine(item);
+                Console.WriteLine($"Option {idx++}. {item}");
             }
 
-            ReadChoice($"Please input a number between 0 and {options.Length} to select: ", options, out selection);
+            Console.WriteLine();
+
+            selection = ReadInteger(prompt, 1, options.Length);
         }
+        #endregion
     }
 }
