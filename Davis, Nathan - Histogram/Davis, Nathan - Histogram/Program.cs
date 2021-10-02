@@ -10,6 +10,7 @@ namespace Davis__Nathan___Histogram
     {
         static void Main(string[] args)
         {
+            #region Variables
             int userInput = 0;
 
             // options in this array will be displayed as Option #. array entry
@@ -22,6 +23,7 @@ namespace Davis__Nathan___Histogram
                 "Exit"
             };
 
+            // delimeters for spliting given text
             char[] delimeters = new char[]
             {
                 ',',
@@ -34,45 +36,106 @@ namespace Davis__Nathan___Histogram
                 '\t',
                 '\r'
             };
+            #endregion
 
+            // gets speech and splits it into an array, removes empty strings, then converts the array to a list
             List<string> wordList = GetSpeech().Split(delimeters, StringSplitOptions.RemoveEmptyEntries).ToList();
-            Dictionary<string, int> wordCount = new Dictionary<string, int>();
 
+            // case-insensitive dictionary
+            Dictionary<string, int> wordDic = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
+            // Adds each unique word in the list to the dictionary and counts how many times each word is used
             foreach (string word in wordList)
             {
-
-                if (!wordCount.ContainsKey(word.ToLower()) || !wordCount.ContainsKey(word))
+                if (wordDic.ContainsKey(word))
                 {
-                    wordCount.Add(word, 1);
+                    wordDic[word]++;
                 }
 
                 else
                 {
-                    wordCount[word] = wordCount[word.ToLower()]++;
+                    wordDic.Add(word, 1);
                 }
             }
 
             Console.WriteLine("Welcome to Lab 1: Histogram!");
 
+            // Keeps the user in the menu
             while(userInput != 6)
             {
                 ReadChoice("Option", menuOptions, out userInput);
 
                 switch (userInput)
                 {
+                    #region case 1
                     case 1:
-                        foreach(KeyValuePair<string, int> word in wordCount)
-                        {
-                            Console.WriteLine(word);
+                        Console.WriteLine();
+
+                        // Prints each word, number of times that word shows up, and a bar in the dictionary formatted with color and positioning.
+                        foreach(KeyValuePair<string, int> word in wordDic)
+                        {   
+                            // alternates the colors of the lines
+                            if(Console.CursorTop % 2 == 0)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                            }
+
+                            // adjusts the postions and prints the words
+                            Console.SetCursorPosition((Console.CursorLeft + 15) - word.Key.Length, Console.CursorTop);
+                            Console.Write(word.Key);
+                            Console.SetCursorPosition(20, Console.CursorTop);
+                            Console.Write($"{word.Value}");
+
+                            // set the background color to make a bar. alternates the color each line
+                            if (Console.CursorTop % 2 == 0)
+                            {
+                                Console.BackgroundColor = ConsoleColor.Blue;
+                            }
+                            else
+                            {
+                                Console.BackgroundColor = ConsoleColor.White;
+                            }
+
+                            // sets potions for the bar to print from
+                            Console.SetCursorPosition(25, Console.CursorTop);
+
+                            // prints space to match the value
+                            for (int i = 0; i < word.Value; i++)
+                            {
+                                Console.Write(" ");
+                            }
+
+                            // resets for the next line
+                            Console.ResetColor();
+                            Console.WriteLine();
                         }
 
-                        Console.ReadKey();
                         break;
+                    #endregion
 
                     case 2:
-                        Console.WriteLine("\n\t\tNot Implemented! Returning you to Menu...");
-                        System.Threading.Thread.Sleep(4000);
-                        Console.Clear();
+                        string wordToSearch = "";
+                        ReadString("What word do you want to find? ", ref wordToSearch);
+                        Console.WriteLine();
+
+                        if (wordDic.ContainsKey(wordToSearch))
+                        {
+                            Console.SetCursorPosition((Console.CursorLeft + 15) - wordDic.ContainsKey(wordToSearch).ToString().Length, Console.CursorTop);
+                            Console.Write(wordToSearch);
+                            Console.SetCursorPosition(20, Console.CursorTop);
+                            Console.Write(wordDic[wordToSearch]);
+                            Console.BackgroundColor = ConsoleColor.White;
+                            Console.SetCursorPosition(25, Console.CursorTop);
+
+                            for (int i = 0; i < wordDic[wordToSearch]; i++)
+                            {
+                                Console.Write(" ");
+                            }
+
+                            Console.ResetColor();
+                            Console.WriteLine();
+                        }
+
                         break;
 
                     case 3:
@@ -100,6 +163,7 @@ namespace Davis__Nathan___Histogram
                         Console.WriteLine("Invalid selection!");
                         break;
                 }
+                Console.ReadKey();
             }
 
             // Clears console and centers exit message
@@ -156,7 +220,7 @@ namespace Davis__Nathan___Histogram
             // loops until user input is valid
             while(valid == false)
             {
-                Console.Write($"Please enter a {prompt}: ");
+                Console.Write(prompt);
                 string readStringInput = Console.ReadLine();
 
                 // checks is user input is empty or only whitespace
@@ -170,7 +234,7 @@ namespace Davis__Nathan___Histogram
                 else
                 {
                     Console.Clear();
-                    Console.WriteLine($"Input was not valid! Please enter a {prompt}!");
+                    Console.WriteLine($"Input was not valid! \n");
                 }
             }
         }
