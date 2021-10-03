@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace Davis__Nathan___Histogram
 {
@@ -23,8 +25,8 @@ namespace Davis__Nathan___Histogram
                 "Exit"
             };
 
-            // delimeters for spliting given text
-            char[] delimeters = new char[]
+            // delimeters for spliting given text into words
+            char[] delimetersWordSplit = new char[]
             {
                 ',',
                 '.',
@@ -32,14 +34,26 @@ namespace Davis__Nathan___Histogram
                 ':',
                 ';',
                 ' ',
+                '"',
+                '?',
                 '\n',
                 '\t',
                 '\r'
             };
+
+            // delimeters for spliting into sentences
+            char[] delimetersSentenceSplit = new char[]
+            {
+                '.',
+                '!',
+                '?'
+            };
+
             #endregion
 
             // gets speech and splits it into an array, removes empty strings, then converts the array to a list
-            List<string> wordList = GetSpeech().Split(delimeters, StringSplitOptions.RemoveEmptyEntries).ToList();
+            List<string> wordList = GetSpeechFromFile().Split(delimetersWordSplit, StringSplitOptions.RemoveEmptyEntries).ToList();
+            List<string> sentences = GetSpeechFromFile().Split(delimetersSentenceSplit, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             // case-insensitive dictionary
             Dictionary<string, int> wordDic = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
@@ -113,6 +127,7 @@ namespace Davis__Nathan___Histogram
                         break;
                     #endregion
 
+                    #region case 2
                     case 2:
                         string wordToSearch = "";
                         ReadString("What word do you want to find? ", ref wordToSearch);
@@ -136,18 +151,35 @@ namespace Davis__Nathan___Histogram
                             Console.WriteLine();
                         }
 
-                        break;
+                        foreach (string item in sentences)
+                        {
+                            if (item.Contains($" {wordToSearch} ") || item.StartsWith(wordToSearch) || item.EndsWith(wordToSearch))
+                            {
+                                Console.WriteLine(item);
+                            }
+                        }
 
-                    case 3:
-                        Console.WriteLine("\n\t\tNot Implemented! Returning you to Menu...");
-                        System.Threading.Thread.Sleep(4000);
-                        Console.Clear();
+
                         break;
+                    #endregion
+
+                    #region case 3
+                    case 3:
+                        string fileName = "";
+                        ReadString("Please enter the files name: ", ref fileName);
+
+                        if (Path.GetExtension(fileName) != ".json")
+                        {
+                            fileName = Path.ChangeExtension(fileName, ".json");
+                        }
+
+                        System.IO.File.WriteAllText($@"D:\FullSail\PG2\PG2_Code\Davis, Nathan - Histogram\Davis, Nathan - Histogram\{fileName}", JsonConvert.SerializeObject(wordDic));
+
+                        break;
+                    #endregion
 
                     case 4:
-                        Console.WriteLine("\n\t\tNot Implemented! Returning you to Menu...");
-                        System.Threading.Thread.Sleep(4000);
-                        Console.Clear();
+
                         break;
 
                     case 5:
@@ -163,7 +195,6 @@ namespace Davis__Nathan___Histogram
                         Console.WriteLine("Invalid selection!");
                         break;
                 }
-                Console.ReadKey();
             }
 
             // Clears console and centers exit message
@@ -279,6 +310,25 @@ namespace Davis__Nathan___Histogram
                 "And when this happens, when we allow freedom to ring, when we let it ring from every village and every hamlet, from every state and every city, we will be able to speed up that day when all of God's children, black men and white men, Jews and Gentiles, Protestants and Catholics, will be able to join hands and sing in the words of the old Negro spiritual, Free at last! free at last! thank God Almighty, we are free at last!";
 
             return text;
+        }
+        #endregion
+
+        #region GetSpeechFromFile Method
+        static string GetSpeechFromFile()
+        {
+            string speech = "";
+
+            using (var reader = new StreamReader("speech.csv"))
+            {
+                string line = "";
+
+                while((line = reader.ReadLine()) != null)
+                {
+                    speech = speech + line;
+                } 
+            }
+
+            return speech;
         }
         #endregion
     }
