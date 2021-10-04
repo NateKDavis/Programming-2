@@ -12,8 +12,18 @@ namespace Davis__Nathan___Histogram
     {
         static void Main(string[] args)
         {
+            /* TODOS:
+               make methods for
+                generating the bar based on word count
+                sending error or success and reseting to menu
+                reloading the sentence and word lists 
+            
+               Adding sorting to the histogram
+            */
+
             #region Variables
             int userInput = 0;
+            int largestWordLength = 0;
 
             // options in this array will be displayed as Option #. array entry
             string[] menuOptions = new string[] {
@@ -36,6 +46,8 @@ namespace Davis__Nathan___Histogram
                 ' ',
                 '"',
                 '?',
+                ']',
+                '[',
                 '\n',
                 '\t',
                 '\r'
@@ -49,14 +61,14 @@ namespace Davis__Nathan___Histogram
                 '?'
             };
 
-            #endregion
-
-            // gets speech and splits it into an array, removes empty strings, then converts the array to a list
-            List<string> wordList = GetSpeechFromFile().Split(delimetersWordSplit, StringSplitOptions.RemoveEmptyEntries).ToList();
-            List<string> sentences = GetSpeechFromFile().Split(delimetersSentenceSplit, StringSplitOptions.RemoveEmptyEntries).ToList();
-
             // case-insensitive dictionary
             Dictionary<string, int> wordDic = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+            #endregion
+
+            #region load histogram
+            // gets speech and splits it into an array, removes empty strings, then converts the array to a list
+            List<string> wordList = GetSpeechFromFile().Split(delimetersWordSplit, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
+            List<string> sentences = GetSpeechFromFile().Split(delimetersSentenceSplit, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
 
             // Adds each unique word in the list to the dictionary and counts how many times each word is used
             foreach (string word in wordList)
@@ -72,10 +84,18 @@ namespace Davis__Nathan___Histogram
                 }
             }
 
-            Console.WriteLine("Welcome to Lab 1: Histogram!");
+            // gets the largest word for formatting purposes
+            foreach (KeyValuePair<string, int> word in wordDic)
+            {
+                if (word.Key.Length > largestWordLength)
+                {
+                    largestWordLength = word.Key.Length;
+                }
+            }
+            #endregion
 
             // Keeps the user in the menu
-            while(userInput != 6)
+            while (userInput != 6)
             {
                 ReadChoice("Option", menuOptions, out userInput);
 
@@ -87,7 +107,7 @@ namespace Davis__Nathan___Histogram
 
                         // Prints each word, number of times that word shows up, and a bar in the dictionary formatted with color and positioning.
                         foreach(KeyValuePair<string, int> word in wordDic)
-                        {   
+                        {
                             // alternates the colors of the lines
                             if(Console.CursorTop % 2 == 0)
                             {
@@ -95,9 +115,9 @@ namespace Davis__Nathan___Histogram
                             }
 
                             // adjusts the postions and prints the words
-                            Console.SetCursorPosition((Console.CursorLeft + 15) - word.Key.Length, Console.CursorTop);
+                            Console.SetCursorPosition((Console.CursorLeft + largestWordLength + 1) - word.Key.Length, Console.CursorTop);
                             Console.Write(word.Key);
-                            Console.SetCursorPosition(20, Console.CursorTop);
+                            Console.SetCursorPosition((Console.CursorLeft + 3), Console.CursorTop);
                             Console.Write($"{word.Value}");
 
                             // set the background color to make a bar. alternates the color each line
@@ -110,8 +130,7 @@ namespace Davis__Nathan___Histogram
                                 Console.BackgroundColor = ConsoleColor.White;
                             }
 
-                            // sets potions for the bar to print from
-                            Console.SetCursorPosition(25, Console.CursorTop);
+                            HistogramFormator(word.Value);
 
                             // prints space to match the value
                             for (int i = 0; i < word.Value; i++)
@@ -124,23 +143,28 @@ namespace Davis__Nathan___Histogram
                             Console.WriteLine();
                         }
 
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     #endregion
 
                     #region case 2
                     case 2:
                         string wordToSearch = "";
-                        ReadString("What word do you want to find? ", ref wordToSearch);
-                        Console.WriteLine();
+                        
+                        ReadString("\nWhat word do you want to find? ", ref wordToSearch);
 
+                        string caseTwoErrorMsg = $"The word {wordToSearch} was not found! Press any key to return to the menu..";
+
+                        // checks if the word is in the dictionary, if it is not shows an error. 
                         if (wordDic.ContainsKey(wordToSearch))
                         {
-                            Console.SetCursorPosition((Console.CursorLeft + 15) - wordDic.ContainsKey(wordToSearch).ToString().Length, Console.CursorTop);
-                            Console.Write(wordToSearch);
-                            Console.SetCursorPosition(20, Console.CursorTop);
+                            Console.Write($"\n{wordToSearch}");
+                            Console.SetCursorPosition((Console.CursorLeft + 3), Console.CursorTop);
                             Console.Write(wordDic[wordToSearch]);
                             Console.BackgroundColor = ConsoleColor.White;
-                            Console.SetCursorPosition(25, Console.CursorTop);
+
+                            HistogramFormator(wordDic[wordToSearch]);
 
                             for (int i = 0; i < wordDic[wordToSearch]; i++)
                             {
@@ -148,51 +172,121 @@ namespace Davis__Nathan___Histogram
                             }
 
                             Console.ResetColor();
+                            Console.WriteLine("\n");
+
+                            // checks sentences for the search word
+                            foreach (string sentence in sentences)
+                            {
+                                string[] sentenceWords = sentence.Split(delimetersWordSplit, StringSplitOptions.RemoveEmptyEntries);
+
+                                foreach (string word in sentenceWords)
+                                {
+                                    if (word == wordToSearch)
+                                    {
+                                        Console.WriteLine(sentence.TrimStart());
+                                        break;
+                                    }
+                                }
+                            }
+
                             Console.WriteLine();
                         }
 
-                        foreach (string item in sentences)
+                        else
                         {
-                            if (item.Contains($" {wordToSearch} ") || item.StartsWith(wordToSearch) || item.EndsWith(wordToSearch))
-                            {
-                                Console.WriteLine(item);
-                            }
+                            Console.Clear();
+                            Console.SetCursorPosition(Console.WindowWidth / 2 - caseTwoErrorMsg.Length / 2, Console.WindowHeight / 2);
+                            Console.WriteLine(caseTwoErrorMsg);
                         }
 
-
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     #endregion
 
                     #region case 3
                     case 3:
-                        string fileName = "";
-                        ReadString("Please enter the files name: ", ref fileName);
+                        string fileNameToSave = "";
+                        ReadString("\nPlease enter the file name to save: ", ref fileNameToSave);
 
-                        if (Path.GetExtension(fileName) != ".json")
+                        // checks and corrects the file extension Make a method given time
+                        if (Path.GetExtension(fileNameToSave) != ".json")
                         {
-                            fileName = Path.ChangeExtension(fileName, ".json");
+                            fileNameToSave = Path.ChangeExtension(fileNameToSave, ".json");
                         }
 
-                        System.IO.File.WriteAllText($@"D:\FullSail\PG2\PG2_Code\Davis, Nathan - Histogram\Davis, Nathan - Histogram\{fileName}", JsonConvert.SerializeObject(wordDic));
+                        // trys to save the file or throws an error
+                        try
+                        {
+                            File.WriteAllText($@"D:\FullSail\PG2\PG2_Code\Davis, Nathan - Histogram\Saved Histograms\{fileNameToSave}", JsonConvert.SerializeObject(wordDic));
+                            Console.WriteLine($"\nFile saved as {fileNameToSave}. Press any key to return to the menu...");
+                            Console.ReadKey();
+                            Console.Clear();
+                        }
+                        catch
+                        {
+                            Console.WriteLine("\nFile could not save!");
+                        }
 
                         break;
                     #endregion
 
+                    #region case 4
                     case 4:
+                        string fileNameToLoad = "";
+
+                        Console.WriteLine();
+                        ReadString("Please enter the file name to load: ", ref fileNameToLoad);
+
+                        // checks and corrects file extension. Make a method given time
+                        if (Path.GetExtension(fileNameToLoad) != ".json")
+                        {
+                            fileNameToLoad = Path.ChangeExtension(fileNameToLoad, ".json");
+                        }
+
+                        try
+                        {
+                            wordDic.Clear();
+                            wordDic = JsonConvert.DeserializeObject<Dictionary<string, int>>(File.ReadAllText($@"D:\FullSail\PG2\PG2_Code\Davis, Nathan - Histogram\Saved Histograms\{fileNameToLoad}"));
+                            Console.WriteLine("\nFile loaded. Press any key to return to the menu...");
+                            Console.ReadKey();
+                            Console.Clear();
+                        }
+                        
+                        catch
+                        {
+                            Console.WriteLine("file was not found!");
+                        }
 
                         break;
+                    #endregion
 
+                    #region case 5
                     case 5:
-                        Console.WriteLine("\n\t\tNot Implemented! Returning you to Menu...");
-                        System.Threading.Thread.Sleep(4000);
-                        Console.Clear();
+                        string wordToRemove = "";
+                        ReadString("\nPlease enter a word to remove: ", ref wordToRemove);
+
+                        try
+                        {
+                            if (wordDic.Remove(wordToRemove))
+                            {
+                                Console.WriteLine($"\n{wordToRemove} was removed. Press any key to return to the menu..");
+                                Console.ReadKey();
+                                Console.Clear();
+                            }
+                        }
+
+                        catch
+                        {
+                            Console.WriteLine($"{wordToRemove} was not in the dictionary! Press any key to return to the menu..");
+                            Console.ReadKey();
+                            Console.Clear();
+                        }
+                        
                         break;
+                    #endregion
 
                     case 6:
-                        break;
-
-                    default:
-                        Console.WriteLine("Invalid selection!");
                         break;
                 }
             }
@@ -210,32 +304,23 @@ namespace Davis__Nathan___Histogram
         {
             bool valid = false;
             int readIntInput = 0;
+            string errorMessage = $"Input was not between {min} and {max}!";
 
             // while loop to continue asking the user for a valid input
-            while(valid == false)
+            while (valid == false)
             {
                 Console.Write($"Please enter a value for a {prompt} that is between {min} and {max}: ");
 
-                // if to check if input is a number
-                if( int.TryParse(Console.ReadLine(), out readIntInput) )
+                // if to check if input is a number within min and max
+                if ( int.TryParse(Console.ReadLine(), out readIntInput) && readIntInput >= min && readIntInput <= max)
                 {
-                    // if to check if number is with in min and max
-                    if(readIntInput >= min && readIntInput <= max)
-                    {
-                        break;
-                    }
-
-                    // error message for user
-                    else
-                    {
-                        Console.WriteLine($"Input was not between {min} and {max}!");
-                    }
+                    break;
                 }
 
                 // error message for user
                 else
                 {
-                    Console.WriteLine("Input was not a number!");
+                    Console.WriteLine($"{errorMessage}");
                 }
             }
 
@@ -275,7 +360,6 @@ namespace Davis__Nathan___Histogram
         static void ReadChoice(string prompt, string[] options, out int selection)
         {
             int idx = 1;
-
             Console.WriteLine();
 
             // print each option in the given index
@@ -329,6 +413,32 @@ namespace Davis__Nathan___Histogram
             }
 
             return speech;
+        }
+        #endregion
+
+        #region HistogramFormator Method
+        static void HistogramFormator(int givenInt)
+        {
+            // sets potions for the bar to print from
+            if (givenInt < 10)
+            {
+                Console.SetCursorPosition((Console.CursorLeft + 4), Console.CursorTop);
+            }
+
+            else if (givenInt < 100)
+            {
+                Console.SetCursorPosition((Console.CursorLeft + 3), Console.CursorTop);
+            }
+
+            else if (givenInt < 1000)
+            {
+                Console.SetCursorPosition((Console.CursorLeft + 2), Console.CursorTop);
+            }
+
+            else if (givenInt < 10000)
+            {
+                Console.SetCursorPosition((Console.CursorLeft + 1), Console.CursorTop);
+            }
         }
         #endregion
     }
