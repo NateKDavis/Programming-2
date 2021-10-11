@@ -181,7 +181,7 @@ namespace Davis__Nathan___Histogram
 
                                 foreach (string word in sentenceWords)
                                 {
-                                    if (word == wordToSearch)
+                                    if (word.Equals(wordToSearch))
                                     {
                                         Console.WriteLine(sentence.TrimStart());
                                         break;
