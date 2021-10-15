@@ -69,6 +69,8 @@ namespace LAB_3_Sorting
                         Console.WriteLine("\nMerge Sort");
                         Console.WriteLine("----------------------------------------------------------------------------------");
 
+                        List<string> mergesorted = new List<string>(MergeSort(namesUnsorted));
+
                         for (int i = 0; i < namesUnsorted.Count; i++)
                         {
                            Console.Write(namesUnsorted[i]);
@@ -218,23 +220,21 @@ namespace LAB_3_Sorting
                 {
                     return givenList;
                 }
-                else
-                {
-                    for (int i = 0; i < givenList.Count; i++)
-                    {
-                        if (i < (int)givenList.Count / 2)
-                        {
-                            left.Add(givenList[i]);
-                        }
-                        else
-                        {
-                            right.Add(givenList[i]);
-                        }
-                    }
 
-                    MergeSort(left);
-                    MergeSort(right);
+                for (int i = 0; i < givenList.Count; i++)
+                {
+                    if (i < (int)givenList.Count / 2)
+                    {
+                         left.Add(givenList[i]);
+                    }
+                    else
+                    {
+                         right.Add(givenList[i]);
+                    }
                 }
+
+                left = MergeSort(left);
+                right = MergeSort(right);
 
                 return Merge(left, right);
             }
@@ -250,32 +250,27 @@ namespace LAB_3_Sorting
                 {
                     if (left.First().CompareTo(right.First()) == -1 || left.First().CompareTo(right.First()) == 0)
                     {
-                        mergedList.Append(left.First());
+                        mergedList.Add(left.First());
                         left.Remove(left.First());
                     }
                     else
                     {
-                        mergedList.Append(right.First());
+                        mergedList.Add(right.First());
                         right.Remove(right.First());
                     }
                 }
-
-                if (right.Count() != 0)
+                
+                while (right.Count() != 0)
                 {
-                    while (right.Count() != 0)
-                    {
-                        mergedList.Append(right.First());
-                        right.Remove(right.First());
-                    }
+                    mergedList.Add(right.First());
+                    right.Remove(right.First());
                 }
-                else
+                    
+                while (left.Count() != 0)
                 {
-                    while (left.Count() != 0)
-                    {
-                        mergedList.Append(left.First());
-                        left.Remove(left.First());
-                    }
-                }
+                    mergedList.Add(left.First());
+                    left.Remove(left.First());
+                }                
 
                 return mergedList;
             }
