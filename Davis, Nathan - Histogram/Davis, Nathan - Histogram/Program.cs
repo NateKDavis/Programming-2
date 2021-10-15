@@ -16,7 +16,7 @@ namespace Davis__Nathan___Histogram
                make methods for
                 generating the bar based on word count
                 sending error or success and reseting to menu
-                reloading the sentence and word lists 
+                reloading the sentence and word lists
             
                Adding sorting to the histogram
             */
