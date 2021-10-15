@@ -66,21 +66,15 @@ namespace LAB_3_Sorting
 
                     #region case 2
                     case 2:
-                        List<string> mergeSortedList = new List<string>(MergeSort(namesUnsorted));
-
                         Console.WriteLine("\nMerge Sort");
                         Console.WriteLine("----------------------------------------------------------------------------------");
 
-                        foreach (string item in mergeSortedList)
+                        for (int i = 0; i < namesUnsorted.Count; i++)
                         {
-                            Console.WriteLine(item);
+                           Console.Write(namesUnsorted[i]);
+                           Console.SetCursorPosition(longestWord + 5, Console.CursorTop);
+                           Console.Write($"{MergeSort(namesUnsorted)[i]}\n");
                         }
-                        //for (int i = 0; i < namesUnsorted.Count; i++)
-                        //{
-                         //   Console.Write(namesUnsorted[i]);
-                        //    Console.SetCursorPosition(longestWord + 5, Console.CursorTop);
-                         //   Console.Write($"{mergeSortedList[i]}\n");
-                        //}
 
                         Console.ReadKey();
                         Console.Clear();
@@ -89,8 +83,22 @@ namespace LAB_3_Sorting
                     #endregion
 
                     #region case 3
-                    case 3:
+                    case 3:                        
+                        Console.WriteLine("\nBinary Search");
+                        Console.WriteLine("-----------------------------------");                        
+
+                        for (int i = 0; i < sortedList.Count; i++)
+                        {
+                            string termToSearch = sortedList[i];
+                            Console.Write(namesUnsorted[i]);
+                            Console.SetCursorPosition(longestWord + 5, Console.CursorTop);
+                            Console.Write($"Index: {i}");
+                            Console.SetCursorPosition(longestWord + 18, Console.CursorTop);
+                            Console.WriteLine($"Found Index: {BinarySearch(sortedList, termToSearch, 0, sortedList.Count())}");
+                        }                      
                         
+                        Console.ReadKey();
+                        Console.Clear();
 
                         break;
                     #endregion
@@ -129,10 +137,9 @@ namespace LAB_3_Sorting
             #region BubbleSort Method
             List<string> BubbleSort(List<string> givenList)
             {
-                List<string> listToSort = new List<string>(givenList);
                 bool swapped = true;
 
-                int numberOfElements = listToSort.Count();
+                int numberOfElements = givenList.Count();
 
                 // Loop to go through and swap elements
                 while (swapped == true)
@@ -141,16 +148,16 @@ namespace LAB_3_Sorting
 
                     for (int index = 1; index < numberOfElements; index++)
                     {
-                        if (listToSort[index - 1].CompareTo(listToSort[index]) == 1)
+                        if (givenList[index - 1].CompareTo(givenList[index]) == 1)
                         {
-                            Swap(listToSort, index);
+                            Swap(givenList, index);
                             swapped = true;
                         }
                     }
                     numberOfElements = numberOfElements - 1;
                 }
 
-                return listToSort;
+                return givenList;
             }
             #endregion
 
@@ -204,25 +211,24 @@ namespace LAB_3_Sorting
             #region MergeSort
             List<string> MergeSort(List<string> givenList)
             {
-                List<string> listToSort = new List<string>(givenList);
                 List<string> left = new List<string>();
                 List<string> right = new List<string>();
 
-                if (listToSort.Count <= 1)
+                if (givenList.Count <= 1)
                 {
-
+                    return givenList;
                 }
                 else
                 {
-                    for (int i = 0; i < listToSort.Count; i++)
+                    for (int i = 0; i < givenList.Count; i++)
                     {
-                        if (i < listToSort.Count / 2)
+                        if (i < (int)givenList.Count / 2)
                         {
-                            left.Add(listToSort[i]);
+                            left.Add(givenList[i]);
                         }
                         else
                         {
-                            right.Add(listToSort[i]);
+                            right.Add(givenList[i]);
                         }
                     }
 
@@ -244,30 +250,30 @@ namespace LAB_3_Sorting
                 {
                     if (left.First().CompareTo(right.First()) == -1 || left.First().CompareTo(right.First()) == 0)
                     {
-                        mergedList.Add(left.First());
+                        mergedList.Append(left.First());
                         left.Remove(left.First());
                     }
                     else
                     {
-                        mergedList.Add(right.First());
+                        mergedList.Append(right.First());
                         right.Remove(right.First());
                     }
                 }
 
-                if(right.Count == 0)
+                if (right.Count() != 0)
                 {
-                    while(left.Count() != 0)
+                    while (right.Count() != 0)
                     {
-                        mergedList.Add(left.First());
-                        left.Remove(left.First());
+                        mergedList.Append(right.First());
+                        right.Remove(right.First());
                     }
                 }
                 else
                 {
-                    while (right.Count() != 0)
+                    while (left.Count() != 0)
                     {
-                        mergedList.Add(right.First());
-                        right.Remove(right.First());
+                        mergedList.Append(left.First());
+                        left.Remove(left.First());
                     }
                 }
 
@@ -320,6 +326,34 @@ namespace LAB_3_Sorting
                 }
 
                 return readIntInput;
+            }
+            #endregion
+
+            #region ReadString Method
+            static void ReadString(string prompt, ref string value)
+            {
+                bool valid = false;
+
+                // loops until user input is valid
+                while (valid == false)
+                {
+                    Console.Write(prompt);
+                    string readStringInput = Console.ReadLine();
+
+                    // checks is user input is empty or only whitespace
+                    if (!string.IsNullOrWhiteSpace(readStringInput))
+                    {
+                        value = readStringInput;
+                        break;
+                    }
+
+                    // error message for user
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine($"Input was not valid! \n");
+                    }
+                }
             }
             #endregion
         }
