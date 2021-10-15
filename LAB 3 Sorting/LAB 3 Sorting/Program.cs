@@ -106,9 +106,7 @@ namespace LAB_3_Sorting
                     #endregion
 
                     #region case 4
-                    case 4:
-                        
-
+                    case 4:                        
                         break;
                     #endregion
                 }
