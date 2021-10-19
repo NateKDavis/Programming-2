@@ -6,49 +6,62 @@ using System.Threading.Tasks;
 
 namespace PG02_LinkedLists
 {
-    public class PG2Stack<T>
+    public class PG2Queue<T>
     {
         private Node<T> _head;
+        private Node<T> _tail;
 
-        public int Count
-        {
-            get; private set;
-        }
+        public int Count { get; private set; }
 
-        public void Push(T testValue)
+        public void Enqueue(T testValue)
         {
             Node<T> node = new Node<T>();
             node.data = testValue;
-            node.next = _head;
-            _head = node;
+
+            if (Count == 0)
+            {
+                _head = node;
+                _tail = node;
+            }
+            else
+            {
+                _tail.next = node;
+                _tail = node;
+            }
+
             Count++;
         }
 
-        public T Pop()
+        public T Dequeue()
         {
-            try
+            if (Count == 0)
+            {
+                throw new InvalidOperationException();                
+            }
+            else
             {
                 T result = _head.data;
                 _head = _head.next;
                 Count--;
 
+                if (Count == 0)
+                {
+                    _tail = null;
+                }
+
                 return result;
-            }
-            catch (NullReferenceException)
-            {
-                throw new InvalidOperationException();
             }            
         }
 
         public T Peek()
         {
-            try
-            {
-                return _head.data;
-            }
-            catch (NullReferenceException)
+            if (_head == null)
             {
                 throw new InvalidOperationException();
+            }
+            else
+            {
+                return _head.data;
             }
         }
 

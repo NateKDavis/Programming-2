@@ -41,7 +41,7 @@ namespace PG02_LinkedLists_Tests
         {
             //TODO: change the class from Stack to PG2Stack
             //create the stack
-            Stack<int> testStack = new Stack<int>();
+            PG2Stack<int> testStack = new PG2Stack<int>();
 
             //remove the item from the stack
             Assert.ThrowsException<InvalidOperationException>(() => { testStack.Pop(); });
@@ -54,7 +54,7 @@ namespace PG02_LinkedLists_Tests
 
             //TODO: change the class from Stack to PG2Stack
             //create the stack
-            Stack<int> testStack = new Stack<int>();
+            PG2Stack<int> testStack = new PG2Stack<int>();
 
             //add a test value to the stack
             testStack.Push(testValue);
@@ -72,7 +72,7 @@ namespace PG02_LinkedLists_Tests
         {
             //TODO: change the class from Stack to PG2Stack
             //create the stack
-            Stack<int> testStack = new Stack<int>();
+            PG2Stack<int> testStack = new PG2Stack<int>();
 
             //remove the item from the stack
             Assert.ThrowsException<InvalidOperationException>(() => { testStack.Peek(); });
@@ -85,7 +85,7 @@ namespace PG02_LinkedLists_Tests
 
             //TODO: change the class from Stack to PG2Stack
             //create the stack
-            Stack<int> testStack = new Stack<int>();
+            PG2Stack<int> testStack = new PG2Stack<int>();
 
             //add a test value to the stack
             foreach (var testValue in testValues)
@@ -104,7 +104,7 @@ namespace PG02_LinkedLists_Tests
 
             //TODO: change the class from Stack to PG2Stack
             //create the stack
-            Stack<int> testStack = new Stack<int>();
+            PG2Stack<int> testStack = new PG2Stack<int>();
 
             //add a test value to the stack
             foreach (var testValue in testValues)
@@ -114,7 +114,7 @@ namespace PG02_LinkedLists_Tests
             //the order of items in the stack should be 50,40,30,20,10
 
             //TODO: call your reverse method
-            //testStack.Reverse();
+            testStack.Reverse();
             //the stack order should now be 10, 20, 30, 40, 50
 
             for (int i = 0; i < testValues.Length; i++)

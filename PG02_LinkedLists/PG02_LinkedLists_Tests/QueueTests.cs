@@ -15,7 +15,7 @@ namespace PG02_LinkedLists_Tests
 
             //TODO: change the class from Queue to PG2Queue
             //create the Queue
-            Queue<int> testQueue = new Queue<int>();
+            PG2Queue<int> testQueue = new PG2Queue<int>();
 
             //add a test value to the Queue
             foreach (var testValue in testValues)
@@ -40,7 +40,7 @@ namespace PG02_LinkedLists_Tests
         {
             //TODO: change the class from Queue to PG2Queue
             //create the Queue
-            Queue<int> testQueue = new Queue<int>();
+            PG2Queue<int> testQueue = new PG2Queue<int>();
 
             //remove the item from the Queue
             Assert.ThrowsException<InvalidOperationException>(() => { testQueue.Dequeue(); });
@@ -53,7 +53,7 @@ namespace PG02_LinkedLists_Tests
 
             //TODO: change the class from Queue to PG2Queue
             //create the Queue
-            Queue<int> testQueue = new Queue<int>();
+            PG2Queue<int> testQueue = new PG2Queue<int>();
 
             //add a test value to the Queue
             testQueue.Enqueue(testValue);
@@ -71,7 +71,7 @@ namespace PG02_LinkedLists_Tests
         {
             //TODO: change the class from Queue to PG2Queue
             //create the Queue
-            Queue<int> testQueue = new Queue<int>();
+            PG2Queue<int> testQueue = new PG2Queue<int>();
 
             //remove the item from the Queue
             Assert.ThrowsException<InvalidOperationException>(() => { testQueue.Peek(); });
@@ -84,7 +84,7 @@ namespace PG02_LinkedLists_Tests
 
             //TODO: change the class from Queue to PG2Queue
             //create the Queue
-            Queue<int> testQueue = new Queue<int>();
+            PG2Queue<int> testQueue = new PG2Queue<int>();
 
             //add a test value to the Queue
             foreach (var testValue in testValues)
@@ -103,7 +103,7 @@ namespace PG02_LinkedLists_Tests
 
             //TODO: change the class from Queue to PG2Queue
             //create the Queue
-            Queue<int> testQueue = new Queue<int>();
+            PG2Queue<int> testQueue = new PG2Queue<int>();
 
             //add a test value to the Queue
             foreach (var testValue in testValues)
@@ -113,7 +113,7 @@ namespace PG02_LinkedLists_Tests
             //the order of items in the Queue should be 10, 20, 30, 40, 50
 
             //TODO: call your reverse method
-            //testQueue.Reverse();
+            testQueue.Reverse();
             //the Queue order should now be 50,40,30,20,10
 
             for (int i = testValues.Length - 1; i >= 0; i--)
