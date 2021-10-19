@@ -52,15 +52,14 @@ namespace PG02_LinkedLists
             }
         }
 
-        public Node<T> Reverse()
+        public void Reverse()
         {
             while (_head.next != null)
             {
-                Node<T> temp = _head.next;
-                _head.next = null;
-                _head = temp;
-
-
+                Node<T> previousNode = null;
+                _head.next = previousNode;
+                previousNode = _head;
+                _head = _head.next;
             }
         }
     }
