@@ -10,11 +10,7 @@ namespace BlackjackLibrary
 {
     public class BlackjackCard : Card
     {
-        public int Value 
-        {
-            get { return Value; }
-            set { } 
-        }
+        public int Value { get; set; }
 
         public BlackjackCard(CardFace Face, CardSuit Suit) : base(Face, Suit)
         {

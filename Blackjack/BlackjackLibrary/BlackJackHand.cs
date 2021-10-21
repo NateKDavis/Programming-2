@@ -19,9 +19,14 @@ namespace BlackjackLibrary
 
         public override void AddCard(ICard card)
         {
-            _cards.Add(card);
+            _cards.Add((BlackjackCard)card);
             numOfCards++;
-            Score = BlackjackCard.;
+            Score = 0;
+
+            foreach (BlackjackCard item in _cards)
+            {
+                Score = Score + item.Value;
+            }
         }
 
         public override void Draw(int x, int y)
@@ -30,7 +35,6 @@ namespace BlackjackLibrary
             {
                 _cards[1].Draw(x + 5, y);
                 Console.SetCursorPosition((Console.WindowWidth / 2) - 4, Console.CursorTop + 1);
-                Console.WriteLine($"Score: {Score}\n");
             }
             else
             {

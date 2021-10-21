@@ -16,28 +16,12 @@ namespace BlackjackLibrary
         {
             Console.Clear();
 
-            string dealerTitle = "-=-=-=-=- Dealer -=-=-=-=-";
-            string playerTitle = "-=-=-=-=- Player -=-=-=-=-";
-
             _dealer = new BlackJackHand(true);
             _player = new BlackJackHand(false);
             _deck = new Deck();
+            _deck.Shuffle();
 
             DealInitialCards();
-
-            Console.SetCursorPosition((Console.WindowWidth / 2) - (dealerTitle.Length / 2), 0);
-            Console.WriteLine($"{dealerTitle}");
-            Console.SetCursorPosition((Console.WindowWidth / 2) - (7 * _dealer.numOfCards + 7) /2, Console.CursorTop + 1);
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.Write("       ");
-            Console.ResetColor();
-            _dealer.Draw(Console.CursorLeft, Console.CursorTop);
-
-            Console.SetCursorPosition((Console.WindowWidth / 2) - 13, Console.CursorTop);
-            Console.WriteLine($"{playerTitle}");
-            Console.SetCursorPosition((Console.WindowWidth / 2) - (7 * _player.numOfCards + 6) / 2, Console.CursorTop + 1);
-            _player.Draw(Console.CursorLeft, Console.CursorTop);
-
 
             if (_player.Score != 21 || _dealer.Score != 21)
             {
@@ -59,9 +43,25 @@ namespace BlackjackLibrary
         public void PlayersTurn()
         {
             int userInput;
+            string dealerTitle = "-=-=-=-=- Dealer -=-=-=-=-";
+            string playerTitle = "-=-=-=-=- Player -=-=-=-=-";
 
             while (_player.Score < 21)
             {
+                Console.Clear();
+                Console.SetCursorPosition((Console.WindowWidth / 2) - (dealerTitle.Length / 2), 0);
+                Console.WriteLine($"{dealerTitle}");
+                Console.SetCursorPosition((Console.WindowWidth / 2) - (7 * _dealer.numOfCards + 7) / 2, Console.CursorTop + 1);
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.Write("       ");
+                Console.ResetColor();
+                _dealer.Draw(Console.CursorLeft, Console.CursorTop);
+
+                Console.SetCursorPosition((Console.WindowWidth / 2) - 13, Console.CursorTop);
+                Console.WriteLine($"{playerTitle}");
+                Console.SetCursorPosition((Console.WindowWidth / 2) - (7 * _player.numOfCards + 6) / 2, Console.CursorTop + 1);
+                _player.Draw(Console.CursorLeft, Console.CursorTop);
+
                 userInput = Misc.ReadInteger("1. Hit or 2. Stand", 1, 2);
 
                 if (userInput == 1)

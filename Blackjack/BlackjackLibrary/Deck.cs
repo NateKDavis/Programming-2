@@ -40,8 +40,9 @@ namespace BlackjackLibrary
             {
                 Random rand = new Random();
 
-                if (rand.Next() % 2 == 1)
+                if (rand.Next() %  2 == 1)
                 {
+                    
                     deckHalfOne.Add(_card[card]);
                 }
 
@@ -53,6 +54,8 @@ namespace BlackjackLibrary
             _card.Clear();
             _card.AddRange(deckHalfOne);
             _card.AddRange(deckHalfTwo);
+            deckHalfOne.Clear();
+            deckHalfTwo.Clear();
         }
 
         public void makeDeck()
