@@ -10,11 +10,14 @@ namespace BlackjackLibrary
 {
     public class BlackjackCard : Card
     {
-        public int Value { get; set; }
+        public int Value 
+        {
+            get { return Value; }
+            set { } 
+        }
 
         public BlackjackCard(CardFace Face, CardSuit Suit) : base(Face, Suit)
         {
-
             if (Face == CardFace.Ten || Face == CardFace.J || Face == CardFace.Q || Face == CardFace.K)
             {
                 Value = 10;

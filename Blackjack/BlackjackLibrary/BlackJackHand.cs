@@ -6,26 +6,37 @@ using System.Threading.Tasks;
 
 namespace BlackjackLibrary
 {
-    class BlackJackHand : Hand
+    public class BlackJackHand : Hand
     {
-        public int Score { get; set; }
+        public int Score { get; private set; }
+        public int numOfCards { get; set; }
         public bool IsDealer {get; set; }
 
-        BlackJackHand(bool isDealer = false)
+        public BlackJackHand(bool isDealer)
         {
-
+            IsDealer = isDealer;
         }
 
         public override void AddCard(ICard card)
         {
             _cards.Add(card);
+            numOfCards++;
+            Score = BlackjackCard.;
         }
 
         public override void Draw(int x, int y)
         {
-            foreach (ICard item in _cards)
+            if (IsDealer == true)
             {
-                Draw(Console.CursorTop, Console.CursorLeft + 5);
+                _cards[1].Draw(x + 5, y);
+                Console.SetCursorPosition((Console.WindowWidth / 2) - 4, Console.CursorTop + 1);
+                Console.WriteLine($"Score: {Score}\n");
+            }
+            else
+            {
+                base.Draw(x, y);
+                Console.SetCursorPosition((Console.WindowWidth / 2) - 4, Console.CursorTop + 1);
+                Console.WriteLine($"Score: {Score}\n");
             }
         }
     }

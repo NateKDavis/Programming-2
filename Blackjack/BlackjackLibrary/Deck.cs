@@ -10,7 +10,7 @@ namespace BlackjackLibrary
 {
     public class Deck
     {
-        public List<ICard> _card = new List<ICard>();
+        List<ICard> _card = new List<ICard>();
         List<ICard> deckHalfOne = new List<ICard>();
         List<ICard> deckHalfTwo = new List<ICard>();
 
@@ -38,17 +38,18 @@ namespace BlackjackLibrary
         {
             for (int card = 0; card < 52; card++)
             {
-                if (card % 2 == 1)
+                Random rand = new Random();
+
+                if (rand.Next() % 2 == 1)
                 {
                     deckHalfOne.Add(_card[card]);
                 }
 
                 else
                 {
-                    deckHalfTwo.Add(_card[card]);
+                    deckHalfTwo.Add(_card[card]);                    
                 }                
             }
-
             _card.Clear();
             _card.AddRange(deckHalfOne);
             _card.AddRange(deckHalfTwo);

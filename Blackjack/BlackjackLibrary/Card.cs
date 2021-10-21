@@ -17,6 +17,7 @@ namespace BlackjackLibrary
         {
             char suitSymbol = '#';
             string faceToUse = "";
+            int faceNum = 0;
 
             Console.BackgroundColor = ConsoleColor.White;
             Console.SetCursorPosition(x, y);
@@ -55,7 +56,16 @@ namespace BlackjackLibrary
                 faceToUse = $"{(int)Face}";
             }
 
-            Console.WriteLine($"  {(faceToUse)} {suitSymbol}  ");
+            int.TryParse(faceToUse, out faceNum);
+            if (faceNum == 10)
+            {
+                Console.Write($" {(faceToUse)} {suitSymbol}  ");
+            }
+            else
+            {
+                Console.Write($" {(faceToUse)}  {suitSymbol}  ");
+            }
+            
             Console.ResetColor();
         }
 

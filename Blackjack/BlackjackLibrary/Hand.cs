@@ -18,9 +18,17 @@ namespace BlackjackLibrary
 
         public virtual void Draw(int x, int y)
         {
+            Console.SetCursorPosition(x, y);
+            int idx = 0;
             foreach (ICard item in _cards)
             {
-                Draw(Console.CursorTop, Console.CursorLeft + 5);
+                if (idx % 7 == 0)
+                {
+                    Console.WriteLine();
+                }
+                
+                item.Draw(x + (12 * idx), y);
+                idx++;
             }
         }
     }
