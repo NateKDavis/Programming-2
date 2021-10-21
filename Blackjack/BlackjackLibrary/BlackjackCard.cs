@@ -20,7 +20,7 @@ namespace BlackjackLibrary
             }
             else if (Face == CardFace.A)
             {
-                Value = 1;
+                Value = 11;
             }
             else
             {

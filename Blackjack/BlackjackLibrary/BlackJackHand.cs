@@ -25,7 +25,21 @@ namespace BlackjackLibrary
 
             foreach (BlackjackCard item in _cards)
             {
-                Score = Score + item.Value;
+                if (card.Face == Blackjack.CardFace.A)
+                {
+                    if (Score > 10 )
+                    {
+                        Score = Score + 1;
+                    }
+                    else
+                    {
+                        Score = Score + item.Value;
+                    }
+                }
+                else
+                {
+                    Score = Score + item.Value;
+                }                
             }
         }
 
